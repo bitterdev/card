@@ -1,0 +1,3 @@
+# Card 
+
+The Card add-on for Concrete CMS provides a straightforward block that renders a Bootstrap 5 card element, offering a flexible and clean way to display content. In this block, you can easily define sections such as the header, body, and footer, allowing for a wide range of use cases from product descriptions to team member showcases. The card will be styled to match the look and feel of a standard Bootstrap card, ensuring compatibility with any Bootstrap-based theme available in the marketplace. This add-on is perfect for users who want to leverage the power of Bootstrap 5 while keeping their content simple, responsive, and easy to manage.

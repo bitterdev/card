@@ -9,37 +9,20 @@
             <unsigned/>
             <key/>
         </field>
-        <field name="timeout" type="integer">
+        <field name="title" type="string" size="255"/>
+        <field name="body" type="text"/>
+        <field name="fID" type="integer">
             <unsigned/>
+            <default value="0"/>
         </field>
-        <field name="speed" type="integer">
-            <unsigned/>
-        </field>
-    </table>
 
-    <table name="btCardItems">
-        <field name="id" type="integer">
-            <unsigned/>
-            <autoincrement/>
-            <key/>
-        </field>
-        <field name="bID" type="integer">
-            <unsigned/>
-        </field>
-        <field name="mediaType" type="string" size="255"/>
-        <field name="imagefID" type="integer">
+        <field name="buttonLabel" type="string" size="255"/>
+        <field name="buttonExternalLink" type="string" size="255"/>
+        <field name="buttonFileLinkID" type="integer">
             <unsigned/>
             <default value="0"/>
         </field>
-        <field name="webmfID" type="integer">
-            <unsigned/>
-            <default value="0"/>
-        </field>
-        <field name="oggfID" type="integer">
-            <unsigned/>
-            <default value="0"/>
-        </field>
-        <field name="mp4fID" type="integer">
+        <field name="buttonInternalLinkCID" type="integer">
             <unsigned/>
             <default value="0"/>
         </field>

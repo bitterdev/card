@@ -1,84 +1,82 @@
-<?php
+<?php /** @noinspection DuplicatedCode */
 
 defined('C5_EXECUTE') or die('Access denied');
 
 use Concrete\Core\Entity\File\File as FileEntity;
-use Concrete\Core\Entity\File\Version;
 use Concrete\Core\File\File;
+use Concrete\Core\Entity\File\Version;
 use Concrete\Core\Page\Page;
-use HtmlObject\Element;
+use Concrete\Core\Support\Facade\Url;
 
-/** @var array $items */
-/** @var int $timeout */
-/** @var int $speed */
+/** @var string|null $title */
+/** @var string|null $body */
+/** @var int|null $fID */
+/** @var string|null $buttonLabel */
+/** @var int|null $cID */
+/** @var int|null $buttonInternalLinkCID */
+/** @var int|null $buttonFileLinkID */
+/** @var string|null $buttonExternalLink */
 
-$c = Page::getCurrentPage();
+$title = $title ?? null;
+$body = $body ?? null;
+$fID = $fID ?? null;
+$imageUrl = $imageUrl ?? null;
+$imageUrlAltText = $imageUrlAltText ?? null;
+$buttonLabel = $buttonLabel ?? null;
+$buttonLink = null;
+$cID = $cID ?? null;
+$buttonInternalLinkCID = $buttonInternalLinkCID ?? null;
+$buttonFileLinkID = $buttonFileLinkID ?? null;
+$buttonExternalLink = $buttonExternalLink ?? null;
 
+if (!empty($buttonInternalLinkCID) && $buttonInternalLinkCID > 0) {
+    $buttonLink = (string)Url::to(Page::getByID($buttonInternalLinkCID));
+} elseif (!empty($buttonFileLinkID) && $buttonFileLinkID > 0) {
+    $f = File::getByID($buttonFileLinkID);
+
+    if ($f instanceof FileEntity) {
+        $fv = $f->getApprovedVersion();
+        if ($fv instanceof Version) {
+            $buttonLink = $fv->getURL();
+        }
+    }
+} elseif (!empty($buttonExternalLink) && strlen($buttonExternalLink) > 0) {
+    $buttonLink = $buttonExternalLink;
+}
+
+$f = File::getByID($fID);
+
+if ($f instanceof FileEntity) {
+    $fv = $f->getApprovedVersion();
+    if ($fv instanceof Version) {
+        $imageUrl = $fv->getURL();
+        $imageUrlAltText = $fv->getTitle();
+    }
+}
 ?>
 
-<?php if (is_object($c) && $c->isEditMode()) { ?>
-    <div class="ccm-edit-mode-disabled-item">
-        <div style="padding: 8px;">
-            <?php echo t('Content disabled in edit mode.'); ?>
-        </div>
+<div class="card">
+    <?php if (!empty($imageUrl)) { ?>
+        <img class="card-img-top" src="<?php echo $imageUrl; ?>" alt="<?php echo $imageUrlAltText; ?>">
+    <?php } ?>
+
+    <div class="card-body">
+        <?php if (!empty($title)) { ?>
+            <h5 class="card-title">
+                <?php echo $title; ?>
+            </h5>
+        <?php } ?>
+
+        <?php if (!empty($body)) { ?>
+            <p class="card-text">
+                <?php echo $body ?>
+            </p>
+        <?php } ?>
+
+        <?php if (!empty($buttonLink) && !empty($buttonLabel)) { ?>
+            <a href="<?php echo h($buttonLink); ?>" class="btn btn-primary">
+                <?php echo $buttonLabel; ?>
+            </a>
+        <?php } ?>
     </div>
-<?php } else { ?>
-    <div>
-        <div class="card" data-timeout="<?php echo h($timeout); ?>"
-             data-speed="<?php echo h($speed); ?>">
-
-            <?php if (isset($items) && is_array($items) && count($items) > 0) {
-                foreach ($items as $item) {
-                    if ($item["mediaType"] === "video") {
-                        $mimeTypeMapping = [
-                            "webmfID" => "video/webm",
-                            "oggfID" => "video/ogg",
-                            "mp4fID" => "video/mp4",
-                        ];
-
-                        $slideElement = new Element("div");
-                        $slideElement->addClass("slide");
-                        $videoElement = new Element("video");
-                        $videoElement->setAttribute("muted", "muted");
-                        $videoElement->setAttribute("playsinline", "playsinline");
-
-                        foreach ($mimeTypeMapping as $fieldName => $mimeType) {
-                            if (isset($item[$fieldName]) && !empty($item[$fieldName])) {
-                                $fileEntity = File::getByID($item[$fieldName]);
-
-                                if ($fileEntity instanceof FileEntity) {
-                                    $fileVersionEntity = $fileEntity->getApprovedVersion();
-
-                                    if ($fileVersionEntity instanceof Version) {
-                                        $sourceElement = new Element("source");
-                                        $sourceElement->setAttribute("src", $fileVersionEntity->getURL());
-                                        $sourceElement->setAttribute("type", $mimeType);
-                                        $videoElement->appendChild($sourceElement);
-                                    }
-                                }
-                            }
-                        }
-
-                        $slideElement->appendChild($videoElement);
-
-                        echo $slideElement->render();
-                    } else {
-                        $fileEntity = File::getByID($item["imagefID"]);
-
-                        if ($fileEntity instanceof FileEntity) {
-                            $fileVersionEntity = $fileEntity->getApprovedVersion();
-
-                            if ($fileVersionEntity instanceof Version) {
-                                $imageElement = new Element("img");
-                                $imageElement->setAttribute("src", $fileVersionEntity->getURL());
-                                $imageElement->addClass("slide");
-                                echo $imageElement->render();
-                            }
-                        }
-                    }
-                }
-            }
-            ?>
-        </div>
-    </div>
-<?php } ?>
+</div>

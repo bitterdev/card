@@ -1,5 +1,10 @@
 {
   "name": "bitter/card",
   "type": "concrete5-package",
-  "description": "Render a simple, customizable Bootstrap 5 card element with header, body, and footer sections."
+  "description": "Render a simple, customizable Bootstrap 5 card element with header, body, and footer sections.",
+  "autoload": {
+    "psr-4": {
+      "Bitter\\Card\\": "src/Bitter/Card"
+    }
+  }
 }

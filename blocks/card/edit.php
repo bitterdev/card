@@ -62,6 +62,9 @@ $destinationPicker = $app->make(DestinationPicker::class);
 
 /** @noinspection PhpUnhandledExceptionInspection */
 View::element("dashboard/help_blocktypes", [], "card");
+
+/** @noinspection PhpUnhandledExceptionInspection */
+View::element("dashboard/did_you_know", [], "card");
 ?>
 
 <div class="form-group">

@@ -77,6 +77,11 @@ jobs:
           password: ${{ secrets.CONCRETE_MARKETPLACE_PASSWORD }}
           packageFile: release/${{ env.PACKAGE_NAME }}.zip
 
+      - name: Set Git user
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
       - name: Create a tag if not exists
         run: |
           git fetch --tags

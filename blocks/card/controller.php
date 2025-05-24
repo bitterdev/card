@@ -16,7 +16,7 @@ class Controller extends BlockController
 
     public function getBlockTypeDescription(): string
     {
-        return t('Add support to add video and image slideshow to your site.');
+        return t('Render a simple, customizable Bootstrap 5 card element with header, body, and footer sections.');
     }
 
     public function getBlockTypeName(): string
